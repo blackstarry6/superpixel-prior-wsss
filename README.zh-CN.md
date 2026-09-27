@@ -58,18 +58,17 @@ python verify_anchors.py                        # 复核论文报告的锚点数
 
 ### 3. 分割阶段(实验 2)
 
-> **⚠️ 前置条件:** `segmentation/experiment/seamv1-pseudovoc/train.py`
-> 中有一处绝对路径(搜索 `sys.path.insert`),指向分类侧的 `seam-rev/`
-> 目录,用于引入共享的 `spfr` 模块。两种处理方式任选:
+> **⚠️ 前置条件:** `segmentation/experiment/seamv1-pseudovoc/` 里保留了
+> 原工作站的两处绝对路径:
+> 1. `train.py` 的 `sys.path.insert(...)`,指向分类侧的 `seam-rev/`
+>    目录(提供共享的 `spfr` 模块)。改这一行,或者不改代码、运行前设置
+>    `PYTHONPATH=/path/to/repo/seam-rev:$PYTHONPATH`(失效的 `sys.path`
+>    条目是无害的,Python 会静默跳过);
+> 2. `config.py` 的 `DATA_PSEUDO_GT`:伪标签目录(由分类阶段生成,
+>    详见 `segmentation/README_for_SEG.md`)。
 >
-> 1. 把该行改成你本地的 `seam-rev/` 路径;
-> 2. 不改代码,运行前设置环境变量:
->    ```bash
->    export PYTHONPATH=/path/to/repo/seam-rev:$PYTHONPATH
->    ```
->
-> (该硬编码路径在不存在的机器上是无害的——Python 会静默跳过失效的
-> `sys.path` 条目。)
+> 分割实验的完整矩阵(DRSA/DRSB/A/B × 3 种子)与运行命令见
+> **`segmentation/README_for_SEG.md`**。
 
 种子由环境变量选择:
 
@@ -94,7 +93,8 @@ SEED=1 python train.py   # SEED=2、SEED=3 同理;各臂与实验名见 config.p
 
 本仓库新增部分(SPFR 模块、受控运行与验证工具、分析脚本)采用 MIT;
 所扩展的两个上游框架(SEAM、semantic-segmentation-codebase)为其作者的
-MIT 许可,声明已保留——见根目录 `LICENSE` 与 `segmentation/LICENSE`。
+MIT 许可,原始声明逐字节保留——见根目录 `LICENSE`、`seam-rev/LICENSE`
+(SEAM 上游)、`segmentation/LICENSE`(分割框架上游)。
 
 ## 引用
 
