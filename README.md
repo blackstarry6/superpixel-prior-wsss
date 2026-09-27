@@ -1,5 +1,7 @@
 # Superpixel Priors in WSSS — Code and Verification Records
 
+English | [简体中文](./README.zh-CN.md)
+
 Code and verification records for the manuscript *"When Do Superpixel Priors
 Help Weakly Supervised Semantic Segmentation? A Controlled Study with
 Feature-Space Diagnostics and a Projection-Head Intervention"*.
