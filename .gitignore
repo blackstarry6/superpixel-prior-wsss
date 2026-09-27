@@ -1,0 +1,30 @@
+# ── datasets & derived data (never track) ─────────────────
+VOC2012/
+VOCdevkit/
+VOCtrainval*
+SegmentationClassAug/
+pseudo_train*/
+data/
+
+# ── large artifacts ────────────────────────────────────────
+# all full-model checkpoints are excluded; only the small
+# projection-head files (*_proj.pth, ~0.5 MB) are tracked
+*.pth
+!*_proj.pth
+cam_*/
+fm_weights/
+analysis/fm_feat/
+model/
+log/seamv1*
+runs/
+tblog/
+
+# ── generated figures (recreate with make_figures.py) ─────
+figures/
+
+# ── misc ───────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.bak
+*.zip
+.DS_Store

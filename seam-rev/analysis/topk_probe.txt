@@ -1,0 +1,82 @@
+======================================================================
+  Top-K high-confidence sampling probe (pre-registered)
+======================================================================
+  images: 300 (val first-n); pooled per (space,arm,K), ONE classification each;
+  classifier: cosine nearest-centroid (train-split class means), 21-way, 80/20 RandomState(0); chance ~4.8%
+  arm (i): SLIC rs20 superpixel means, fg-majority, purity>=0.9, >=4 cells
+  K sweep: [1, 5, 10]% (cap 100/class/image); CAM precision of K=5% top pixels: 84.5%
+
+  clip  arm(i   ) K= -%: acc=   2.2%  n_train=1483 n_test=371 per-class test min/med=2/13
+  clip  arm(ii  ) K= 1%: acc=  12.9%  n_train=36036 n_test=9009 per-class test min/med=163/361
+  clip  arm(ii  ) K= 5%: acc=  12.7%  n_train=36810 n_test=9203 per-class test min/med=176/344
+  clip  arm(ii  ) K=10%: acc=  13.2%  n_train=36836 n_test=9209 per-class test min/med=159/348
+  clip  arm(iii ) K= 1%: acc=   6.1%  n_train=36685 n_test=9172 per-class test min/med=27/95
+  clip  arm(iii ) K= 5%: acc=   2.7%  n_train=37451 n_test=9363 per-class test min/med=21/88
+  clip  arm(iii ) K=10%: acc=   1.7%  n_train=37458 n_test=9365 per-class test min/med=27/101
+  clip  arm(iv  ) K= 1%: acc=  12.3%  n_train=39004 n_test=9752 per-class test min/med=271/381
+  clip  arm(iv  ) K= 5%: acc=  12.9%  n_train=39902 n_test=9976 per-class test min/med=254/409
+  clip  arm(iv  ) K=10%: acc=  11.6%  n_train=39928 n_test=9982 per-class test min/med=271/385
+  conv5 arm(i   ) K= -%: acc=  70.3%  n_train=24140 n_test=6035 per-class test min/med=71/236
+  conv5 arm(ii  ) K= 1%: acc=  86.5%  n_train=36036 n_test=9009 per-class test min/med=135/352
+  conv5 arm(ii  ) K= 5%: acc=  86.9%  n_train=36810 n_test=9203 per-class test min/med=178/326
+  conv5 arm(ii  ) K=10%: acc=  87.2%  n_train=36836 n_test=9209 per-class test min/med=163/344
+  conv5 arm(iii ) K= 1%: acc=  66.1%  n_train=36704 n_test=9177 per-class test min/med=32/85
+  conv5 arm(iii ) K= 5%: acc=  66.2%  n_train=37511 n_test=9378 per-class test min/med=30/93
+  conv5 arm(iii ) K=10%: acc=  66.4%  n_train=37534 n_test=9384 per-class test min/med=26/103
+  conv5 arm(iv  ) K= 1%: acc=  91.5%  n_train=39004 n_test=9752 per-class test min/med=290/383
+  conv5 arm(iv  ) K= 5%: acc=  91.0%  n_train=39902 n_test=9976 per-class test min/med=284/388
+  conv5 arm(iv  ) K=10%: acc=  91.4%  n_train=39928 n_test=9982 per-class test min/med=269/396
+  dino  arm(i   ) K= -%: acc=   6.0%  n_train=3759 n_test=940 per-class test min/med=10/38
+  dino  arm(ii  ) K= 1%: acc=  22.1%  n_train=36036 n_test=9009 per-class test min/med=149/338
+  dino  arm(ii  ) K= 5%: acc=  21.2%  n_train=36810 n_test=9203 per-class test min/med=166/346
+  dino  arm(ii  ) K=10%: acc=  22.1%  n_train=36836 n_test=9209 per-class test min/med=151/364
+  dino  arm(iii ) K= 1%: acc=   4.4%  n_train=36651 n_test=9163 per-class test min/med=29/92
+  dino  arm(iii ) K= 5%: acc=   6.1%  n_train=37401 n_test=9351 per-class test min/med=22/89
+  dino  arm(iii ) K=10%: acc=  10.3%  n_train=37480 n_test=9371 per-class test min/med=32/89
+  dino  arm(iv  ) K= 1%: acc=  20.8%  n_train=39004 n_test=9752 per-class test min/med=270/367
+  dino  arm(iv  ) K= 5%: acc=  20.9%  n_train=39902 n_test=9976 per-class test min/med=265/385
+  dino  arm(iv  ) K=10%: acc=  21.3%  n_train=39928 n_test=9982 per-class test min/med=255/399
+
+  Pre-registered verdicts (K=5%, thresholds archived 2026-09-07):
+    conv5: (ii)/(i)= 1.24  (ii)= 86.9%  (iii)= 66.2%  -> NOT RESCUED
+    clip: (ii)/(i)= 5.87  (ii)= 12.7%  (iii)=  2.7%  -> BOUNDARY
+    dino: (ii)/(i)= 3.55  (ii)= 21.2%  (iii)=  6.1%  -> BOUNDARY
+
+  Post-hoc robustness (NOT pre-registered): image-level 80/20 split
+  (kills twin-sample leakage: adjacent top-K pixels share feature cells,)
+  (so the sample-level split can place identical vectors in train and test.):
+  clip  arm(i   ) K= -%: acc=   5.4%  (train 1519 / test 335 samples, disjoint images)
+  clip  arm(ii  ) K= 1%: acc=   4.0%  (train 36501 / test 8544 samples, disjoint images)
+  clip  arm(ii  ) K= 5%: acc=   2.3%  (train 36342 / test 9671 samples, disjoint images)
+  clip  arm(ii  ) K=10%: acc=   6.5%  (train 36109 / test 9936 samples, disjoint images)
+  clip  arm(iii ) K= 1%: acc=   3.2%  (train 36279 / test 9578 samples, disjoint images)
+  clip  arm(iii ) K= 5%: acc=   3.0%  (train 37103 / test 9711 samples, disjoint images)
+  clip  arm(iii ) K=10%: acc=   2.9%  (train 37298 / test 9525 samples, disjoint images)
+  clip  arm(iv  ) K= 1%: acc=   3.6%  (train 38581 / test 10175 samples, disjoint images)
+  clip  arm(iv  ) K= 5%: acc=   2.6%  (train 39498 / test 10380 samples, disjoint images)
+  clip  arm(iv  ) K=10%: acc=   5.8%  (train 39204 / test 10706 samples, disjoint images)
+  conv5 arm(i   ) K= -%: acc=  65.5%  (train 24021 / test 6154 samples, disjoint images)
+  conv5 arm(ii  ) K= 1%: acc=  77.7%  (train 36081 / test 8964 samples, disjoint images)
+  conv5 arm(ii  ) K= 5%: acc=  81.3%  (train 36202 / test 9811 samples, disjoint images)
+  conv5 arm(ii  ) K=10%: acc=  82.9%  (train 37127 / test 8918 samples, disjoint images)
+  conv5 arm(iii ) K= 1%: acc=  64.3%  (train 36810 / test 9071 samples, disjoint images)
+  conv5 arm(iii ) K= 5%: acc=  65.4%  (train 38315 / test 8574 samples, disjoint images)
+  conv5 arm(iii ) K=10%: acc=  64.0%  (train 37214 / test 9704 samples, disjoint images)
+  conv5 arm(iv  ) K= 1%: acc=  85.7%  (train 39051 / test 9705 samples, disjoint images)
+  conv5 arm(iv  ) K= 5%: acc=  80.6%  (train 40678 / test 9200 samples, disjoint images)
+  conv5 arm(iv  ) K=10%: acc=  83.5%  (train 40177 / test 9733 samples, disjoint images)
+  dino  arm(i   ) K= -%: acc=   5.5%  (train 3728 / test 971 samples, disjoint images)
+  dino  arm(ii  ) K= 1%: acc=   2.7%  (train 35602 / test 9443 samples, disjoint images)
+  dino  arm(ii  ) K= 5%: acc=   3.2%  (train 36428 / test 9585 samples, disjoint images)
+  dino  arm(ii  ) K=10%: acc=   3.0%  (train 36903 / test 9142 samples, disjoint images)
+  dino  arm(iii ) K= 1%: acc=   3.7%  (train 36995 / test 8819 samples, disjoint images)
+  dino  arm(iii ) K= 5%: acc=   7.9%  (train 36996 / test 9756 samples, disjoint images)
+  dino  arm(iii ) K=10%: acc=  12.5%  (train 37914 / test 8937 samples, disjoint images)
+  dino  arm(iv  ) K= 1%: acc=   6.0%  (train 39185 / test 9571 samples, disjoint images)
+  dino  arm(iv  ) K= 5%: acc=   8.0%  (train 40078 / test 9800 samples, disjoint images)
+  dino  arm(iv  ) K=10%: acc=   2.9%  (train 39639 / test 10271 samples, disjoint images)
+
+  Reading limits (pre-registered): frozen-space signal
+  availability only; positive = "data-side hypothesis gains
+  feature-level support", NOT "PCC mechanism confirmed";
+  arm (iv) is an upper bound (center bias / part confusion).

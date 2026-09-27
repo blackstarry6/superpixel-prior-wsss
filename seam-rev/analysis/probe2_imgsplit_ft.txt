@@ -1,0 +1,4 @@
+  FT-only s1 (conv5) leakage-audit completion
+  cells pooled: 90000 (300 val images, vf>=0.5, cap 300/img)
+    sample  linear= 85.7 proto= 67.4   anchor (published 85.7/67.4; delta +0.0/+0.0)
+    byimage linear= 80.1 proto= 64.2   (delta vs anchor -5.7/-3.3)

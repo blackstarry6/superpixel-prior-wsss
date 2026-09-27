@@ -1,0 +1,18 @@
+======================================================================
+  Feature probe analysis (offline; no training)
+======================================================================
+  images: 300 (val), input 448x448, conv5 (1024, H, W)
+
+--- baseline (../SEAM_model/resnet38_SEAM.pth) ---
+  cells: boundary=4839  interior=892105
+  boundary/interior gradient ratio:  conv5 = 0.79   RGB reference = 0.85
+  pixel classification: linear probe = 85.3%   nearest-class-prototype = 66.2%   (chance 4.8%)
+
+--- FT-only s1 (finetune_only_s1.pth) ---
+  cells: boundary=4839  interior=892105
+  boundary/interior gradient ratio:  conv5 = 0.78   RGB reference = 0.85
+  pixel classification: linear probe = 85.7%   nearest-class-prototype = 67.4%   (chance 4.8%)
+
+  Interpretation:
+  - conv5 ratio ~1 => features do not sharpen at semantic boundaries (smooth).
+  - linear >> prototype => classification space, not a similarity metric.

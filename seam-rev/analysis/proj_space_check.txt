@@ -1,0 +1,28 @@
+======================================================================
+  H2 formal projection-space check (collapse detection)
+======================================================================
+  images: 100 (val, first-n), 448x448; heads: ep1/ep2/ep3/ep4
+  ep1 = random-init reference (warmup=1 => no SPFR gradient in epoch 1)
+  pixel samples/img: 2000; prototype subsample: 4000
+
+--- seed 2 (model: finetune_spfr_proj_s2.pth; final==ep4: True) ---
+  reference erank(conv5 raw, 1024-d) = 360.0
+  ckpt    erank  dead%  simMean  simStd     P5    P95  >0.99   intra   inter    sep
+  ep1      81.6    0.0    0.590   0.075  0.464  0.711   0.00   0.607   0.571  0.036
+  ep2      68.0    0.0    0.763   0.053  0.670  0.843   0.00   0.774   0.750  0.023
+  ep3      61.3    0.0    0.812   0.046  0.730  0.879   0.00   0.823   0.799  0.024
+  ep4      59.1    0.0    0.825   0.043  0.747  0.888   0.00   0.834   0.814  0.020
+
+--- seed 3 (model: finetune_spfr_proj_s3.pth; final==ep4: True) ---
+  reference erank(conv5 raw, 1024-d) = 359.9
+  ckpt    erank  dead%  simMean  simStd     P5    P95  >0.99   intra   inter    sep
+  ep1      80.5    0.0    0.590   0.072  0.471  0.706   0.00   0.605   0.573  0.032
+  ep2      67.8    0.0    0.757   0.054  0.663  0.839   0.00   0.770   0.743  0.027
+  ep3      61.5    0.0    0.805   0.046  0.724  0.874   0.00   0.816   0.794  0.022
+  ep4      59.5    0.0    0.820   0.043  0.744  0.885   0.00   0.830   0.808  0.022
+
+  Reading guide (pre-stated):
+  - collapse signature: erank -> single digits, dead% dominant,
+    sim distribution pinned near 1 (std ~0, >0.99 fraction ~1).
+  - healthy: erank stays well above ~1/4 of dim (>=32 of 128),
+    dead% small, sim std nonzero, intra > inter maintained.

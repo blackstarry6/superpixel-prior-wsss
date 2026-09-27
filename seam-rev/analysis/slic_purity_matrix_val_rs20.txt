@@ -1,0 +1,18 @@
+======================================================================
+  SLIC purity | split=val | region_size=20 (ruler=10.0, n_iter=5, fast=256px)
+======================================================================
+  images: 1449, superpixels (kept): 607069, skipped (valid<10): 7800
+  superpixels per image: kept 419.0, raw 424.3
+  mean purity (pixel-weighted): 0.987
+  median purity (per-superpixel): 1.000
+  crossing semantic boundary (purity<0.8): 17749 / 607069 = 2.9%
+  valid pixels inside crossing superpixels: 2.6%
+  >=2 classes (share>=10%): 28037 / 607069 = 4.6%
+
+  purity histogram (share of superpixels):
+    [0.00, 0.50):   0.0%
+    [0.50, 0.70):   1.8%
+    [0.70, 0.80):   1.1%
+    [0.80, 0.90):   1.7%
+    [0.90, 0.95):   1.4%
+    [0.95, 1.01):  93.9%

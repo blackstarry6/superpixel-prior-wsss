@@ -1,0 +1,14 @@
+======================================================================
+  Feature probe analysis (offline; no training)
+======================================================================
+  images: 300 (val), input 448x448, conv5 1024x28x28
+
+baseline:   0%|          | 0/300 [00:00<?, ?it/s]baseline:   0%|          | 1/300 [00:03<19:53,  3.99s/it]baseline:   1%|          | 2/300 [00:04<08:36,  1.73s/it]baseline:   1%|          | 3/300 [00:04<04:58,  1.00s/it]baseline:   1%|▏         | 4/300 [00:04<03:16,  1.51it/s]baseline:   1%|▏         | 4/300 [00:04<05:37,  1.14s/it]
+Traceback (most recent call last):
+  File "F:\ImageSegmentation\SEAM-REV-V1\analyze_probe.py", line 205, in <module>
+    main()
+  File "F:\ImageSegmentation\SEAM-REV-V1\analyze_probe.py", line 148, in main
+    r_f, cb, ci = boundary_ratio(fg, bfrac, vf)
+  File "F:\ImageSegmentation\SEAM-REV-V1\analyze_probe.py", line 103, in boundary_ratio
+    return float(feat_grad[bmask].mean() / max(feat_grad[imask].mean(), 1e-8)), int(bmask.sum()), int(imask.sum())
+IndexError: boolean index did not match indexed array along dimension 0; dimension is 56 but corresponding boolean dimension is 28

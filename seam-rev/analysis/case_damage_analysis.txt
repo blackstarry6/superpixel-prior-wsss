@@ -1,0 +1,85 @@
+  [Source: analyze_cases.py | Paper Table 4, image-level rows + Fig. 2 damage distribution]
+  [Metric: IMAGE-level mIoU delta (whole-image, all classes pooled)]
+  [NOT class-level IoU — for that see case_class_analysis.txt]
+
+
+cam_baseline_new             global mIoU =  51.23%    [OK]
+cam_finetune_only_s1         global mIoU =  51.16%    (expected 51.16)  [OK]
+cam_finetune_spfr_s1         global mIoU =  51.23%    (expected 51.23)  [OK]
+cam_finetune_only_s2         global mIoU =  51.06%    (expected 51.06)  [OK]
+cam_finetune_spfr_s2         global mIoU =  51.07%    (expected 51.07)  [OK]
+cam_finetune_only_s3         global mIoU =  51.40%    (expected 51.4)  [OK]
+cam_finetune_spfr_s3         global mIoU =  51.56%    (expected 51.56)  [OK]
+
+==============================================================================
+  Per-image damage  (mIoU delta = SPFR - FT-only, mean over 3 seed pairs)
+==============================================================================
+  all images (n=1449):   mean +0.09%  std 0.58%  hurt(<-1%) 2.0%  improved(>+1%) 4.8%
+
+  single-object images (n=927): mean +0.07% +/- 0.57%
+  multi-object images  (n=522):  mean +0.13% +/- 0.60%
+  difference = +0.07%  (permutation test: p = 0.0419, n_perm=20000)
+
+group                                  n  mean dmg     std   p-val
+------------------------------------------------------------------
+person alone (n_fg==1)                61    +0.52%    0.64%  0.0000
+person + other classes (n_fg>=2)     384    +0.21%    0.57%  0.0000
+
+person+dog co-occurrence              30    +0.18%    0.83%  0.3566
+person+cat co-occurrence              11    -0.24%    0.67%  0.0540
+person+horse co-occurrence            35    +0.17%    0.62%  0.3957
+person+motor co-occurrence            47    +0.30%    0.49%  0.0140
+person+boat co-occurrence             19    +0.17%    0.44%  0.5001
+person+bottle co-occurrence           48    +0.34%    0.58%  0.0046
+person+bus co-occurrence              24    +0.18%    0.50%  0.3991
+person+car co-occurrence              51    +0.18%    0.42%  0.2690
+person+chair co-occurrence            48    +0.26%    0.65%  0.0414
+person+cow co-occurrence              14    -0.02%    0.59%  0.4569
+person+table co-occurrence            42    +0.35%    0.60%  0.0050
+person+plant co-occurrence            23    +0.08%    0.40%  0.8933
+person+sofa co-occurrence             27    +0.09%    0.42%  0.9779
+person+train co-occurrence            15    -0.02%    0.49%  0.4374
+person+tv co-occurrence               21    +0.30%    0.57%  0.0927
+
+  Top-20 most damaged images (SPFR hurts):
+    2007_005460     dmg=  -7.18%  n_fg=1  classes=cat
+    2007_002427     dmg=  -3.00%  n_fg=2  classes=plant+sofa
+    2011_000874     dmg=  -2.17%  n_fg=2  classes=aero+person
+    2007_009331     dmg=  -2.14%  n_fg=3  classes=dog+horse+person
+    2010_005719     dmg=  -2.10%  n_fg=1  classes=sheep
+    2010_002763     dmg=  -2.04%  n_fg=3  classes=cat+cow+person
+    2007_003587     dmg=  -2.01%  n_fg=2  classes=car+train
+    2008_005680     dmg=  -1.89%  n_fg=1  classes=plant
+    2010_000163     dmg=  -1.78%  n_fg=1  classes=cat
+    2011_003197     dmg=  -1.70%  n_fg=1  classes=train
+    2011_000482     dmg=  -1.63%  n_fg=1  classes=bird
+    2008_008393     dmg=  -1.62%  n_fg=1  classes=horse
+    2010_002929     dmg=  -1.55%  n_fg=2  classes=car+person
+    2009_003810     dmg=  -1.55%  n_fg=1  classes=dog
+    2011_002064     dmg=  -1.44%  n_fg=2  classes=bike+car
+    2008_000673     dmg=  -1.43%  n_fg=2  classes=chair+person
+    2010_002900     dmg=  -1.34%  n_fg=1  classes=cat
+    2009_001536     dmg=  -1.32%  n_fg=1  classes=car
+    2011_001868     dmg=  -1.30%  n_fg=1  classes=dog
+    2009_004099     dmg=  -1.28%  n_fg=2  classes=cat+sofa
+  Top-20 most improved images (SPFR helps):
+    2011_003256     dmg=  +3.52%  n_fg=2  classes=dog+sofa
+    2007_009706     dmg=  +3.20%  n_fg=1  classes=table
+    2007_003373     dmg=  +2.54%  n_fg=2  classes=dog+person
+    2007_003841     dmg=  +2.42%  n_fg=1  classes=cow
+    2011_000843     dmg=  +2.31%  n_fg=3  classes=bottle+chair+person
+    2008_006874     dmg=  +2.28%  n_fg=2  classes=motor+person
+    2008_004621     dmg=  +2.26%  n_fg=1  classes=sheep
+    2009_002155     dmg=  +2.20%  n_fg=1  classes=dog
+    2008_000359     dmg=  +2.13%  n_fg=1  classes=person
+    2009_003564     dmg=  +2.08%  n_fg=2  classes=plant+sofa
+    2007_000323     dmg=  +2.01%  n_fg=1  classes=person
+    2010_000110     dmg=  +1.88%  n_fg=2  classes=dog+person
+    2007_005294     dmg=  +1.86%  n_fg=1  classes=bottle
+    2008_000215     dmg=  +1.75%  n_fg=1  classes=person
+    2010_005626     dmg=  +1.75%  n_fg=3  classes=chair+table+person
+    2008_003210     dmg=  +1.74%  n_fg=1  classes=person
+    2007_003742     dmg=  +1.72%  n_fg=2  classes=table+person
+    2008_000992     dmg=  +1.68%  n_fg=1  classes=person
+    2011_001642     dmg=  +1.66%  n_fg=1  classes=dog
+    2009_004987     dmg=  +1.65%  n_fg=2  classes=motor+person

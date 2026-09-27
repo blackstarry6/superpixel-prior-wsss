@@ -1,0 +1,22 @@
+========================================================================
+  probe-2 leakage audit: image-level split re-evaluation
+  (originals untouched; anchor must reproduce published numbers)
+========================================================================
+  cells: cell_stats vf>=0.5, cap 300/img (RandomState(0)); classifiers: ridge a=1 + cosine prototype (21-way)
+  audit split: 300 images permuted (RandomState(0)), 240/60;
+  all cells of a test image held out (same-image leakage impossible)
+
+  space        split    linear   proto   n_tr   n_te   note
+  conv5        sample     85.3    66.2  72000  18000   anchor (published 85.3/66.2; delta -0.0/+0.0)
+  conv5        byimage    79.6    62.5  72000  18000   audit (delta vs anchor -5.7/-3.8)
+
+  clip_vitb16  sample     71.3    10.2  72000  18000   anchor (published 71.3/10.2; delta -0.0/+0.0)
+  clip_vitb16  byimage    69.3    10.3  72000  18000   audit (delta vs anchor -1.9/+0.1)
+
+  dinov2_vitb14 sample     70.6     4.2  72000  18000   anchor (published 70.6/4.2; delta +0.0/-0.0)
+  dinov2_vitb14 byimage    68.7     5.9  72000  18000   audit (delta vs anchor -2.0/+1.7)
+
+  Reading: if audit ~ anchor (<2 pts) the published numbers stand
+  with a protocol note; if audit drops materially, the published
+  numbers should be updated — the direction strengthens the
+  premise-defect claim (prototype moves toward chance).

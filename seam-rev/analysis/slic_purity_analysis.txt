@@ -1,0 +1,17 @@
+======================================================================
+  SLIC semantic purity analysis (training protocol, full val images)
+======================================================================
+  images: 20, superpixels: 8405, skipped (valid<10): 83
+  mean purity (pixel-weighted): 0.983
+  median purity (per-superpixel): 1.000
+  superpixels crossing semantic boundary (purity<0.8): 271 / 8405 = 3.2%
+  valid pixels inside crossing superpixels: 3.3%
+  superpixels containing >=2 classes (share>=10%): 439 / 8405 = 5.2%
+
+  purity histogram (share of superpixels):
+    [0.00, 0.50):   0.0%
+    [0.50, 0.70):   2.0%
+    [0.70, 0.80):   1.2%
+    [0.80, 0.90):   2.0%
+    [0.90, 0.95):   1.9%
+    [0.95, 1.01):  92.8%

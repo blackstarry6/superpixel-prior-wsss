@@ -1,0 +1,41 @@
+========================================================================
+  Table-7 protocol-variant diagnostics (analyze_probe_fm_variants.py)
+  features: analysis/fm_feat/ (300 val images, 448x448, final-layer
+  patch tokens); cell extraction & split seed identical to
+  analyze_probe_fm.py stage 2; one protocol choice changed per variant.
+========================================================================
+
+--- clip_vitb16 (capped cells n=90000, all cells n=229870) ---
+  0 paper (pooled, class-mean, cosine)    10.2%
+  1 per-image split                       33.1%
+  2 centered-cosine prototypes            14.5%
+  3 Euclidean prototypes                   3.5%
+  4 z-scored NearestCentroid               3.5%
+  5 kNN k=1 cosine                        50.3%
+  6 kNN k=5 cosine                        69.5%
+  7 Ridge linear probe                    71.3%
+  8a Ridge z-scored                       71.3%
+  8b Ridge no-cap (all cells)             71.1%
+  9 Ridge train-set self-score            71.1%
+
+--- dinov2_vitb14 (capped cells n=90000, all cells n=299718) ---
+  0 paper (pooled, class-mean, cosine)     4.2%
+  1 per-image split                       33.0%
+  2 centered-cosine prototypes            10.5%
+  3 Euclidean prototypes                   0.8%
+  4 z-scored NearestCentroid               0.8%
+  5 kNN k=1 cosine                        58.2%
+  6 kNN k=5 cosine                        70.0%
+  7 Ridge linear probe                    70.6%
+  8a Ridge z-scored                       70.6%
+  8b Ridge no-cap (all cells)             71.3%
+  9 Ridge train-set self-score            70.6%
+
+--- variant 10: CLS-token image-level readout ---
+  clip_vitb16  zero-shot presence hit-rate       57.0%
+  dinov2_vitb14 CLS 1-NN (5-fold, by image)     73.0%
+
+Reading: no variant reaches 78-91%; linear-family readouts cap at ~71%.
+An independent 78-91% therefore implies a difference outside this table
+(e.g., training on the VOC train split, computing in CLIP's projected
+multimodal space, or a different evaluation) -- implementation needed.

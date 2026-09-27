@@ -1,0 +1,25 @@
+========================================================================
+  Foundation-model probe replication (㉓-B)
+  images: 300 val (same as analyze_probe.py), 448x448,
+  final-layer patch tokens; per-model own preprocessing
+========================================================================
+--- clip_vitb16 ---
+  cells: boundary=2140  interior=226905
+  boundary/interior gradient ratio:  feat = 0.71   RGB reference = 0.79
+  pixel classification: linear = 71.3%  prototype = 10.2%  (chance 4.8%)
+
+--- dinov2_vitb14 ---
+  cells: boundary=2576  interior=296377
+  boundary/interior gradient ratio:  feat = 0.75   RGB reference = 0.81
+  pixel classification: linear = 70.6%  prototype = 4.2%  (chance 4.8%)
+
+--- SEAM conv5 (reference, from analyze_probe.py, 56x56 grid) ---
+  boundary/interior gradient ratio:  conv5 = 0.79   RGB = 0.85
+  pixel classification: linear = 85.3%  prototype = 66.2%  (baseline)
+
+Interpretation:
+  Note: grids differ (CNN 56x56, CLIP 28x28, DINOv2 32x32); RGB references
+  are recomputed per grid, so cross-model ratio comparisons are grid-relative.
+  feat ratio below its own RGB ref + linear >> prototype => premise defect
+  present (features do not sharpen at semantic boundaries; classification
+  space, not a similarity metric).
