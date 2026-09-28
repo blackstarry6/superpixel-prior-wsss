@@ -10,6 +10,7 @@ import numpy as np
 
 plt.rcParams['font.family'] = 'DejaVu Sans'
 plt.rcParams['axes.unicode_minus'] = False
+plt.rcParams['pdf.fonttype'] = 42  # TrueType in PDF (Springer: avoid Type 3)
 
 # --- Exp 1 (classification stage): unchanged, from Table A1 ---
 exp1 = {'bg': 0.06, 'aero': 0.41, 'bike': 0.12, 'bird': -0.06, 'boat': 0.05,

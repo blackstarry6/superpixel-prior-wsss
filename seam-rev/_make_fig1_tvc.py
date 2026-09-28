@@ -12,6 +12,7 @@ Run from F:/ImageSegmentation.  Old fig1_pipeline.png is left untouched.
 """
 import matplotlib
 matplotlib.use('Agg')
+matplotlib.rcParams['pdf.fonttype'] = 42  # TrueType in PDF (Springer: avoid Type 3)
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Polygon, Circle
 import os

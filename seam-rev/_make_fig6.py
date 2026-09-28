@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 plt.rcParams['font.family'] = 'DejaVu Sans'
 plt.rcParams['axes.unicode_minus'] = False
+plt.rcParams['pdf.fonttype'] = 42  # TrueType in PDF (Springer: avoid Type 3)
 
 buckets = ['<0.5', '0.5\u20130.7', '0.7\u20130.8', '0.8\u20130.9', '0.9\u20130.95', '\u22650.95']
 data = {
