@@ -61,7 +61,38 @@ anchor mIoU values reported in the manuscript (baseline 51.23 @ t=0.25;
 FT-only 51.16/51.06/51.40, FT+SPFR 51.23/51.07/51.56 @ t=0.15; paired
 deltas +0.07/+0.01/+0.17).
 
-### 3. Segmentation stage (Experiment 2)
+### 3. Pseudo-label generation (inputs for the segmentation stage)
+
+Both segmentation-stage label sets are produced on the classification side
+(`seam-rev/`), from CAMs of the chosen upstream checkpoint (the paper uses the
+pretrained SEAM baseline; the same 3-scale + flip inference protocol):
+
+```bash
+cd seam-rev
+# CAMs on the train_aug split
+python infer_epoch.py --weights <ckpt>.pth --out_dir cam_train --val_list voc12/train_aug.txt
+```
+
+**High-quality labels** (DRS random-walk refinement via AffinityNet — the
+refined result is written directly as PNG labels):
+
+```bash
+# AffinityNet weights: use the official pretrained ones, or train your own
+python train_aff.py --session_name resnet38_aff                      # optional
+python infer_aff.py --weights resnet38_aff.pth --cam_dir cam_train \
+    --infer_list voc12/train_aug.txt --out_rw pseudo_train_drs        # alpha/beta/logt = 6/8/6 (defaults)
+```
+
+**Low-quality labels** (CAM thresholding):
+
+```bash
+python cam_to_pseudo.py --cam_dir cam_train --out_dir pseudo_train --threshold 0.25
+```
+
+Point `DATA_PSEUDO_GT` in `segmentation/experiment/seamv1-pseudovoc/config.py`
+at `pseudo_train_drs` (DRSA/DRSB arms) or `pseudo_train` (A/B arms).
+
+### 4. Segmentation stage (Experiment 2)
 
 > **⚠️ Prerequisites:** `segmentation/experiment/seamv1-pseudovoc/` contains
 > two absolute paths from the original workstation:
@@ -82,7 +113,7 @@ Seeds are selected by environment variable:
 SEED=1 python train.py   # also SEED=2, SEED=3; arms and experiment names in config.py
 ```
 
-### 4. Results ↔ manuscript mapping
+### 5. Results ↔ manuscript mapping
 
 | File | Backs |
 |---|---|

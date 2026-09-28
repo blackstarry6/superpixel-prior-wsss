@@ -1,5 +1,7 @@
 # Segmentation Stage (Experiment 2) — Run Instructions
 
+English | [简体中文](./README_for_SEG_zh-CN.md)
+
 DeepLabV1 (ResNet-38 backbone, initialized from the SEAM classification
 weights) trained on pseudo labels produced by the classification stage,
 with the optional SPFR loss at the segmentation insertion point.
@@ -32,10 +34,15 @@ workstation:
    `PYTHONPATH=/path/to/repo/seam-rev:$PYTHONPATH` (a dead `sys.path` entry
    is harmless).
 2. **`config.py`** — `DATA_PSEUDO_GT`: absolute path to the pseudo-label
-   directory. High-quality labels come from the classification-side
-   AffinityNet/DRS pipeline (`seam-rev/infer_aff.py`, output
-   `pseudo_train_drs`); low-quality labels are the thresholded CAM masks.
-   Point this to wherever you generated them.
+   directory, generated on the classification side (commands in the root
+   README, Section 3):
+   - DRS-refined (high quality, `pseudo_train_drs`):
+     `python train_aff.py --session_name resnet38_aff` (optional, or use the
+     official pretrained weights), then
+     `python infer_aff.py --weights resnet38_aff.pth --cam_dir cam_train --infer_list voc12/train_aug.txt --out_rw pseudo_train_drs`
+   - CAM-threshold (low quality, `pseudo_train`):
+     `python cam_to_pseudo.py --cam_dir cam_train --out_dir pseudo_train --threshold 0.25`
+   Point `DATA_PSEUDO_GT` to wherever you generated them.
 
 Arm selection is by `config.py`: `USE_SPFR` (`False` = CE-only A arm,
 `True` = B arm) and the `DATA_PSEUDO_GT` / `EXP_NAME` values.

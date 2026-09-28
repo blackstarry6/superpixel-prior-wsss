@@ -56,7 +56,36 @@ python verify_anchors.py                        # 复核论文报告的锚点数
 (baseline 51.23 @ t=0.25;FT-only 51.16/51.06/51.40,FT+SPFR 51.23/51.07/51.56
 @ t=0.15;配对差 +0.07/+0.01/+0.17)。
 
-### 3. 分割阶段(实验 2)
+### 3. 伪标签生成(分割阶段的输入)
+
+分割阶段的两套标签都在分类侧(`seam-rev/`)生成,来源是所选上游权重的
+CAM(论文用预训练 SEAM 基线;推断协议同为三尺度 + 翻转):
+
+```bash
+cd seam-rev
+# 在 train_aug 划分上生成 CAM
+python infer_epoch.py --weights <ckpt>.pth --out_dir cam_train --val_list voc12/train_aug.txt
+```
+
+**高质量标签**(经 AffinityNet 的 DRS 随机游走精化——精化结果直接写成 PNG 标签):
+
+```bash
+# AffinityNet 权重:用官方预训练,或自行训练
+python train_aff.py --session_name resnet38_aff                      # 可选
+python infer_aff.py --weights resnet38_aff.pth --cam_dir cam_train \
+    --infer_list voc12/train_aug.txt --out_rw pseudo_train_drs        # alpha/beta/logt = 6/8/6(默认)
+```
+
+**低质量标签**(CAM 阈值法):
+
+```bash
+python cam_to_pseudo.py --cam_dir cam_train --out_dir pseudo_train --threshold 0.25
+```
+
+在 `segmentation/experiment/seamv1-pseudovoc/config.py` 的 `DATA_PSEUDO_GT`
+中指向 `pseudo_train_drs`(DRSA/DRSB 臂)或 `pseudo_train`(A/B 臂)。
+
+### 4. 分割阶段(实验 2)
 
 > **⚠️ 前置条件:** `segmentation/experiment/seamv1-pseudovoc/` 里保留了
 > 原工作站的两处绝对路径:
@@ -76,7 +105,7 @@ python verify_anchors.py                        # 复核论文报告的锚点数
 SEED=1 python train.py   # SEED=2、SEED=3 同理;各臂与实验名见 config.py
 ```
 
-### 4. 结果 ↔ 论文对照
+### 5. 结果 ↔ 论文对照
 
 | 文件 | 对应内容 |
 |---|---|
